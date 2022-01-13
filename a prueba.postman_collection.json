@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "02de8a36-3f03-49d0-a31e-a92350703f24",
+		"name": "a prueba",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "metodoGet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"verificar exista postId en el response\", function () {\r",
+							"    var pid= jsonData.find(x => x.postId==2);\r",
+							"\r",
+							"\r",
+							"    console.log(pm.globals.get(\"postId\"));\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/comments?postId={{postid}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "{{postid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"verificar texto en response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.response.to.have.jsonBody(\"title\");\r",
+							"    pm.expect(jsonData.title).to.eql(\"verificar prueba\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"verificar prueba\",\r\n    \"body\": \"bar\",\r\n    \"userId\": 1\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/posts",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"verificar response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(4);\r",
+							"    pm.expect(jsonData.title).to.contain(\"ro\");\r",
+							"    pm.response.to.have.jsonBody(\"body\");\r",
+							"    pm.response.to.have.jsonBody(\"userId\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"title\": \"sin ro\",\r\n    \"body\": \"bar\",\r\n    \"userId\": 4\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/posts/4",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"posts",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
